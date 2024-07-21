@@ -55,7 +55,8 @@ const Courses = () => {
 
 const CourseCard = ({course}) => {
   return (
-    <Card>
+    <Card sx={{height : "100%"}}>
+      <div style={{height:"85%"}}>
       <CardMedia
         component="img"
         alt="banner"
@@ -75,13 +76,14 @@ const CourseCard = ({course}) => {
           {course.description}
         </Typography>
       </CardContent>
+      </div>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           padding: "0 30px 0 15px",
-          marginBottom : "20px"
+          marginBottom : "20px",
         }}
       >
         <Button variant="contained">Edit</Button>
