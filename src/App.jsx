@@ -5,6 +5,7 @@ import Signup from './components/Signup'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import Courses from './components/Courses';
+import AddCourse from './components/AddCourse';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/signin" element={<Signin/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/courses" element={<Courses/>}/>
+          <Route path="/addcourses" element={<AddCourse/>}/>
         </Routes>
       </BrowserRouter>
       <Toaster/>

@@ -6,54 +6,60 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Courses = () => {
+
+  const [courses,setCourses] = useState([]);
+  const navigate = useNavigate();
+
+  const getCourses = async()=>{
+    const res = await fetch("http://localhost:3000/admin/courses",{
+      method : "GET",
+      headers:{
+        "Content-type": "application/json",
+        "Authorization": "Bearer "+localStorage.getItem("token")
+      }
+    });
+
+    if(res.status !== 200){
+      navigate('/signin')
+      return;
+    }
+
+    const data = await res.json();
+    setCourses(data);
+  }
+
+  useEffect(()=>{
+    getCourses();
+  },[]);
+
+  if(!courses) return <></>
+
   return (
     <div style={{padding:"20px"}}>
       <Grid container rowSpacing={2} columnSpacing={{ lg: 5, xs:2 }}>
-        <Grid item lg={3} md={4} sm={6}> 
-            <CourseCard/>
-        </Grid>
-        <Grid item lg={3} md={4} sm={6}>
-            <CourseCard/>
-        </Grid>
-        <Grid item lg={3} md={4} sm={6}>
-            <CourseCard/>
-        </Grid>
-        <Grid item lg={3} md={4} sm={6}>
-            <CourseCard/>
-        </Grid>
-        <Grid item lg={3} md={4} sm={6}>
-            <CourseCard/>
-        </Grid>
-        <Grid item lg={3} md={4} sm={6}>
-            <CourseCard/>
-        </Grid>
-        <Grid item lg={3} md={4} sm={6}>
-            <CourseCard/>
-        </Grid>
-        <Grid item lg={3} md={4} sm={6}>
-            <CourseCard/>
-        </Grid>
-        <Grid item lg={3} md={4} sm={6}>
-            <CourseCard/>
-        </Grid>
-        <Grid item lg={3} md={4} sm={6}>
-            <CourseCard/>
-        </Grid>
+        {
+          courses.map((item,index)=>{
+            return <Grid key={index} item lg={3} md={4} sm={6}> 
+            <CourseCard course={item}/>
+            </Grid>
+          })
+        }
       </Grid>
     </div>
   );
 };
 
-const CourseCard = () => {
+const CourseCard = ({course}) => {
   return (
     <Card>
       <CardMedia
         component="img"
         alt="banner"
-        image="https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg"
+        image={course.imageLink}
       />
       <CardContent
         sx={{
@@ -63,10 +69,10 @@ const CourseCard = () => {
         }}
       >
         <Typography variant="h6" component="div">
-          Cat Course
+          {course.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Cat are good animals, they like pizas Lorem ipsum dolor sit
+          {course.description}
         </Typography>
       </CardContent>
       <div
@@ -80,7 +86,7 @@ const CourseCard = () => {
       >
         <Button variant="contained">Edit</Button>
         <Typography variant="text" component="div">
-          Price : 5999
+          Price : {course.price}
         </Typography>
       </div>
     </Card>
