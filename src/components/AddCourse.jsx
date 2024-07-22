@@ -4,10 +4,11 @@ import { Button, TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { userState } from "../store/atoms/user";
+import { userEmailState } from "../store/selectors/userEmail";
 
 const AddCourses = () => {
-  const userEmail = useRecoilValue(userState);
+
+  const userEmail = useRecoilValue(userEmailState);
   const navigate = useNavigate();
 
   const title = useRef();

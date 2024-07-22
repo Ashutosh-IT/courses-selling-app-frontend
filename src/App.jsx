@@ -3,7 +3,7 @@ import Appbar from './components/Appbar'
 import Signin from './components/Signin'
 import Signup from './components/Signup'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import Courses from './components/Courses';
 import AddCourse from './components/AddCourse';
 import { useSetRecoilState } from 'recoil';
@@ -12,8 +12,9 @@ import { userState } from './store/atoms/user.js';
 const App = () => {
 
   const setUser = useSetRecoilState(userState);
-
+  
   const init = async()=>{
+    
     try{
       const res = await fetch("http://localhost:3000/admin/me",{
         method : "GET",
@@ -22,20 +23,33 @@ const App = () => {
           "Authorization": "Bearer "+localStorage.getItem("token")
         }
       });
+
       if(res.status != 200){
-        setUser(null);
+        setUser({
+          isLoading : false,
+          userEmail : null
+        });
         return;
       }
+
       const user = await res.json();
       if(user.username){
         setUser({
+          isLoading : false,
           userEmail : user.username
         })
         return;
       }
+      else{
+        setUser({
+          isLoading : false,
+          userEmail : null
+        })
+      }
     }
     catch(error){
       setUser({
+        isLoading : false,
         userEmail : null
       })
       return;

@@ -7,10 +7,13 @@ import { useSetRecoilState } from "recoil";
 import { userState } from "../store/atoms/user.js";
 
 const Signin = () => {
+
   const email = useRef();
   const password = useRef();
+
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
+  
 
   const notifySuccess = (message) => toast.success(message);
   const notifyError = (message) => toast.error(message);
@@ -35,7 +38,10 @@ const Signin = () => {
     localStorage.setItem("token", data.token);
 
     if (res.status === 200) {
-      setUser(email.current.value);
+      setUser({
+        isLoading : false,
+        userEmail : email.current.value
+      });
       email.current.value = "";
       password.current.value = "";
       notifySuccess(data.message);

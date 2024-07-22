@@ -5,11 +5,13 @@ import { useRef } from "react";
 import toast from "react-hot-toast";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../store/atoms/user";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const email = useRef();
   const password = useRef();
   const setUser = useSetRecoilState(userState);
+  const navigate = useNavigate();
 
   const notifySuccess = (message) => toast.success(message);
   const notifyError = (message) => toast.error(message);
@@ -34,10 +36,14 @@ const Signup = () => {
     localStorage.setItem("token", data.token);
 
     if (res.status === 201) {
-      setUser(email.current.value);
+      setUser({
+        isLoading : false,
+        userEmail : email.current.value
+      });
       email.current.value = "";
       password.current.value = "";
       notifySuccess(data.message);
+      navigate('/courses');
     } else notifyError(data.message);
   };
 
