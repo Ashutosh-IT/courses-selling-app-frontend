@@ -5,27 +5,22 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userEmailState } from "../store/selectors/userEmail";
+import { isUserLoading } from "../store/selectors/isUserLoading";
 
 const AddCourses = () => {
 
   const userEmail = useRecoilValue(userEmailState);
+  const isLoading = useRecoilValue(isUserLoading);
   const navigate = useNavigate();
+
+  if(!isLoading && !userEmail) navigate('/signin');
 
   const title = useRef();
   const description = useRef();
   const imgURL = useRef();
   const price = useRef();
 
-  const check = () => {
-    if (!userEmail) {
-      navigate("/signin");
-      return;
-    }
-  };
 
-  useEffect(() => {
-    check();
-  });
 
   const notifySuccess = (message) => toast.success(message);
   const notifyError = (message) => toast.error(message);
@@ -70,7 +65,7 @@ const AddCourses = () => {
 
 
   return (
-    userEmail &&
+    !isLoading && userEmail ?
     <div
       style={{
         display: "flex",
@@ -131,7 +126,7 @@ const AddCourses = () => {
           Add Course
         </Button>
       </Paper>
-    </div>
+    </div> : <></>
   );
 };
 

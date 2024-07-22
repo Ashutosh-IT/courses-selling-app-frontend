@@ -6,11 +6,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 import Courses from './components/Courses';
 import AddCourse from './components/AddCourse';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userState } from './store/atoms/user.js';
+import { userEmailState } from './store/selectors/userEmail.js';
 
 const App = () => {
-
+  
+  const userEmail = useRecoilValue(userEmailState);
   const setUser = useSetRecoilState(userState);
   
   const init = async()=>{
@@ -59,6 +61,7 @@ const App = () => {
   useEffect(()=>{
     init();
   },[]);
+
 
   return (
     <div>

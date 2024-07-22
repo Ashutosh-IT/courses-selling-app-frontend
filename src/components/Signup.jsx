@@ -3,15 +3,23 @@ import Paper from "@mui/material/Paper";
 import { Button, TextField } from "@mui/material";
 import { useRef } from "react";
 import toast from "react-hot-toast";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../store/atoms/user";
 import { useNavigate } from "react-router-dom";
+import { userEmailState } from "../store/selectors/userEmail";
+import { isUserLoading } from "../store/selectors/isUserLoading";
 
 const Signup = () => {
+
   const email = useRef();
   const password = useRef();
+
+  const userEmail = useRecoilValue(userEmailState);
+  const isLoading = useRecoilValue(isUserLoading);
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
+
+  if(!isLoading && userEmail) navigate('/courses');
 
   const notifySuccess = (message) => toast.success(message);
   const notifyError = (message) => toast.error(message);
@@ -48,6 +56,7 @@ const Signup = () => {
   };
 
   return (
+    !isLoading ?
     <div
       style={{
         display: "flex",
@@ -96,7 +105,7 @@ const Signup = () => {
           Register
         </Button>
       </Paper>
-    </div>
+    </div> : <></>
   );
 };
 
