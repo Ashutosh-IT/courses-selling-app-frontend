@@ -13,7 +13,10 @@ const AddCourses = () => {
   const isLoading = useRecoilValue(isUserLoading);
   const navigate = useNavigate();
 
-  if(!isLoading && !userEmail) navigate('/signin');
+  useEffect(()=>{
+    if(!isLoading && !userEmail) navigate('/signin');
+  })
+  
 
   const title = useRef();
   const description = useRef();

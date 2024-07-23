@@ -18,7 +18,11 @@ const Signin = () => {
   const userEmail = useRecoilValue(userEmailState);
   const isLoading = useRecoilValue(isUserLoading);
 
-  if(!isLoading && userEmail) navigate('/courses');
+  useEffect(()=>{
+    if(!isLoading && userEmail) navigate('/courses');
+  },[userEmail]);
+
+  
   
 
   const notifySuccess = (message) => toast.success(message);
@@ -56,7 +60,7 @@ const Signin = () => {
   };
 
   return (
-    !isLoading ?
+    !isLoading && !userEmail?
     <div
       style={{
         display: "flex",

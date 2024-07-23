@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import { Button, TextField } from "@mui/material";
 import { useRef } from "react";
@@ -19,7 +19,9 @@ const Signup = () => {
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
 
-  if(!isLoading && userEmail) navigate('/courses');
+  useEffect(()=>{
+    if(!isLoading && userEmail) navigate('/courses');
+  },[userEmail]);
 
   const notifySuccess = (message) => toast.success(message);
   const notifyError = (message) => toast.error(message);
@@ -56,7 +58,7 @@ const Signup = () => {
   };
 
   return (
-    !isLoading ?
+    !isLoading && !userEmail?
     <div
       style={{
         display: "flex",
